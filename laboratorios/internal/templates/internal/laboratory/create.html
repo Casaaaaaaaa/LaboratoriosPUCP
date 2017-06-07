@@ -29,15 +29,15 @@
                 <span class="help-block m-b-none">Hasta 50 caracteres permitidos</span>
                 <div class="help-block with-errors"></div>
               </div>
-              
-              <form data-toggle="validator" id="key">
+
+
                 <div class="form-group">
                   <label>Capacidad Máxima de Empleados (*)</label>
                   <input class="form-control" name="laboratory_capacity" id="capacity" type="number" min="5" max="10" value="5" required data-error="Ingrese un valor válido para capacidad de personal">
                   <span class="help-block m-b-none">Mínima cantidad será cinco (5) y máxima será diez (10)</span>
-                  <div class="help-block with-errors"></div>              
+                  <div class="help-block with-errors"></div>
                 </div>
-              </form>
+
             </div>
             <div class="row">
               <div class="form-group">
@@ -60,7 +60,7 @@
                           </tr>
                         {% endfor %}
                       </tbody>
-                      
+
                     </table>
                     <div class="form-group">
                       <label>Responsable de Laboratorio</label>
@@ -82,7 +82,7 @@
                   </select>
               </div>
             </div>
-            
+
             <div class="row">
               <label>Seleccione los inventarios </label>
               <div class="table-responsive">
@@ -134,7 +134,7 @@
             </div>
             <input type="submit" name="registrar" id="register_button">
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -148,19 +148,27 @@
   var counting = 0;
   var to_out;
 
-  $('#capacity').on('invalid.bs.validator', function(){
+  $('#form').on('invalid.bs.validator', function(e) {
+    var $form = $(this);
+    var $elem = $(e.relatedTarget);
     //$('#users_selection').hide();
-    $('input:checkbox').prop('checked', false);
-    selected_users.length = 0;
-    $('input[type=checkbox]').attr('disabled', 'true');
-    counting = 0;
+    if ($elem.attr('id') == 'capacity') {
+      $form.find('input:checkbox').prop('checked', false);
+      selected_users = [];
+      $('input[type=checkbox]').attr('disabled', true);
+      counting = 0;
+    }
   });
 
-  $('#capacity').on('valid.bs.validator', function(){
+  $('#form').on('valid.bs.validator', function(e) {
+    var $form = $(this);
+    var $elem = $(e.relatedTarget);
+    if ($elem.attr('id') == 'capacity') {
+      $form.find('input[type=checkbox]').attr('disabled', false);
+      capacity_users = $("#capacity").val();
+    }
     //$('#users_selection').show();
-    console.log("sjduc");
-    $('input[type=checkbox]').removeAttr('disabled');
-    capacity_users = document.getElementById("capacity").value;
+
   });
 
   $('input[type=checkbox]').click(function() {
